@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 //Add validation
 public class Book {
-    private int personId;
 
     private int bookId;
+
+    private int personId;
 
     private String name;
 
