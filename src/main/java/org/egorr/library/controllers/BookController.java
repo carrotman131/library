@@ -1,5 +1,6 @@
 package org.egorr.library.controllers;
 
+import jakarta.validation.Valid;
 import org.egorr.library.dao.BookDAO;
 import org.egorr.library.dao.PersonDAO;
 import org.egorr.library.models.Book;
@@ -7,6 +8,7 @@ import org.egorr.library.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -20,11 +22,13 @@ public class BookController {
         this.bookDAO = bookDAO;
         this.personDAO = personDAO;
     }
+
     @GetMapping
-    public String getAllBooks(Model model){
+    public String getAllBooks(Model model) {
         model.addAttribute("books", bookDAO.getAllBooks());
         return "books/index";
     }
+
     @GetMapping("/{id}")
     public String getBook(@PathVariable("id") int id, Model model) {
         Book book = bookDAO.getBook(id);
@@ -33,6 +37,7 @@ public class BookController {
         if (book.getPersonId() != 0) model.addAttribute("owner", personDAO.getPerson(book.getPersonId()));
         return "books/show";
     }
+
     @GetMapping("/new")
     public String newBook(@ModelAttribute("book") Book book) {
         return "books/new";
@@ -43,26 +48,35 @@ public class BookController {
         model.addAttribute("book", bookDAO.getBook(id));
         return "books/edit";
     }
+
     // Add validation here
     @PostMapping
-    public String create(@ModelAttribute("book") Book book) {
+    public String create(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "books/new";
+        }
         bookDAO.save(book);
         return "redirect:/books";
     }
+
     // Add validation here
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("book") Book book, @PathVariable("id") int id) {
+    public String update(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult, @PathVariable("id") int id) {
+        if (bindingResult.hasErrors()){
+            return "books/edit";
+        }
         bookDAO.update(id, book);
         return "redirect:/books";
     }
-    // Add a validation here
+
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         bookDAO.delete(id);
         return "redirect:/books";
     }
+
     @PatchMapping("/assign")
-    public String assignBook(@ModelAttribute("book") Book book){
+    public String assignBook(@ModelAttribute("book") Book book) {
         System.out.println(book.getBookId());
         System.out.println(book.getPersonId());
         bookDAO.assign(book.getBookId(), book.getPersonId());
@@ -70,7 +84,7 @@ public class BookController {
     }
 
     @PatchMapping("/release")
-    public String releaseBook(@ModelAttribute("book") Book book){
+    public String releaseBook(@ModelAttribute("book") Book book) {
         System.out.println(book.getBookId());
         System.out.println(book.getPersonId());
         bookDAO.release(book.getBookId());
