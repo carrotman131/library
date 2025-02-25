@@ -26,6 +26,7 @@ public class PeopleController {
     @GetMapping("/{id}")
     public String getPerson(@PathVariable("id") int id, Model model) {
         model.addAttribute("person", personDAO.getPerson(id));
+        model.addAttribute("books", personDAO.getAllBooksByPerson(id));
         return "people/show";
     }
 
@@ -46,7 +47,7 @@ public class PeopleController {
         personDAO.save(person);
         return "redirect:/people";
     }
-
+    // Add validation here
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("person") Person person, @PathVariable("id") int id) {
         personDAO.update(id, person);
