@@ -8,7 +8,7 @@
 <p th:text="${person.getName() + ', ' + person.getYearOfBirthday()}"></p>
 <hr/>
 <!--books here-->
-<div th:if="${books != null}" th:each="book : ${books}">
+<div th:if="${books != null or !books.isEmpty()}" th:each="book : ${books}">
     <a th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYearOfProduction()}"></a>
 </div>
 

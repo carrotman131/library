@@ -1,7 +1,7 @@
 package org.egorr.library.util;
 
-import org.egorr.library.dao.PersonDAO;
 import org.egorr.library.models.Person;
+import org.egorr.library.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -11,11 +11,11 @@ import org.springframework.validation.Validator;
 @Component
 public class PersonValidator implements Validator {
 
-    private final PersonDAO personDAO;
+    private final PeopleService peopleService;
 
     @Autowired
-    public PersonValidator(PersonDAO personDAO) {
-        this.personDAO = personDAO;
+    public PersonValidator(PeopleService peopleService) {
+        this.peopleService = peopleService;
     }
 
 
@@ -28,7 +28,7 @@ public class PersonValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
 
-        if (personDAO.getPerson(person.getName()).isPresent() && personDAO.getPerson(person.getName()).get().getId() != person.getId()){
+        if (peopleService.findOneByName(person.getName()).isPresent() && peopleService.findOneByName(person.getName()).get().getId() != person.getId()){
             errors.rejectValue("name", "", "This name is occupied");
         }
     }
