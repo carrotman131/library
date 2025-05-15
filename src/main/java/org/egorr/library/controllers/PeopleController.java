@@ -51,6 +51,7 @@ public class PeopleController {
     public String create(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult) {
         personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(System.out::println);
             return "people/new";
         }
         peopleService.save(person);
@@ -61,6 +62,7 @@ public class PeopleController {
     public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult, @PathVariable("id") int id) {
         personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors()){
+            bindingResult.getAllErrors().forEach(System.out::println);
             return "people/edit";
         }
         peopleService.update(id, person);

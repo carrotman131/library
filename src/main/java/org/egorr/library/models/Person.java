@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.Hibernate;
 
 import java.util.List;
 
@@ -16,7 +17,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "books")
 //Add validation
 public class Person {
     @Id
@@ -34,11 +34,21 @@ public class Person {
     @Max(value = 2020, message = "Year should be less than 2020")
     private int yearOfBirthday;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Book> books;
 
     public Person(String name, int yearOfBirthday) {
         this.name = name;
         this.yearOfBirthday = yearOfBirthday;
+    }
+
+    public void addBook(Book book){
+        books.add(book);
+        book.setOwner(this);
+    }
+
+    public void removeBook(Book book){
+        books.remove(book);
+        book.setOwner(null);
     }
 }

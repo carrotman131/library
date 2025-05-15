@@ -4,14 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Generated;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 
 @Entity
 @Table(name = "book")
 @Data
+@ToString(exclude = "owner")
 @NoArgsConstructor
 @AllArgsConstructor
 //Add validation
