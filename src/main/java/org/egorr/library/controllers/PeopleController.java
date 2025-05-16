@@ -1,6 +1,7 @@
 package org.egorr.library.controllers;
 
 import jakarta.validation.Valid;
+import org.egorr.library.models.Book;
 import org.egorr.library.models.Person;
 import org.egorr.library.services.PeopleService;
 import org.egorr.library.util.PersonValidator;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/people")
@@ -30,9 +33,11 @@ public class PeopleController {
     }
 
     @GetMapping("/{id}")
-    public String getPerson(@PathVariable("id") int id, Model model) {
+    public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("person", peopleService.findOne(id));
-        model.addAttribute("books", peopleService.getAllBooksByPerson(id));
+        List<Book> bookList = peopleService.getAllBooksByPerson(id);
+
+        model.addAttribute("books", bookList);
         return "people/show";
     }
 

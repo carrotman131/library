@@ -9,7 +9,7 @@
 <hr/>
 <!--books here-->
 <div th:if="${books != null or !books.isEmpty()}" th:each="book : ${books}">
-    <a th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYearOfProduction()}"></a>
+    <p th:style="${book.isExpired() ? 'color: red;' : 'color: green;'}" th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYearOfProduction()}"></p>
 </div>
 
 <p th:if="${books == null or books.isEmpty()}">Person has no books yet</p>

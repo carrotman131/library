@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +56,19 @@ public class PeopleService {
     }
 
     public List<Book> getAllBooksByPerson(int id) {
-        booksRepository.findByOwner(findOne(id));
-        return booksRepository.findByOwner(findOne(id));
+        List<Book> books = booksRepository.findByOwner(findOne(id));
+        for (Book book : books) {
+            if (book.getCreatedAt() != null) {
+                book.setExpired(checkExpired(book.getCreatedAt(), 10));
+            } else book.setExpired(true);
+        }
+        books.forEach(System.out::println);
+        return books;
+    }
+
+    private static boolean checkExpired(Date date, long days) {
+        long millisInDay = 24 * 60 * 60 * 1000;
+        long diff = Math.abs(System.currentTimeMillis() - date.getTime());
+        return diff >= days * millisInDay;
     }
 }

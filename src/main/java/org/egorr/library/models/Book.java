@@ -5,6 +5,9 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 
 @Entity
@@ -36,6 +39,19 @@ public class Book {
     @Column(name = "year_of_production", nullable = false, length = 100)
     @Min(value = 1, message = "Year should be greater than 1")
     private int yearOfProduction;
+
+    @Column(name = "created_at", updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    private Date createdAt;
+
+    @Transient
+    private boolean isExpired;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+    }
 
     public Book(Person owner, String name, String author, int yearOfProduction) {
         this.owner = owner;

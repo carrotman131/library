@@ -1,5 +1,6 @@
 package org.egorr.library.services;
 
+import jakarta.persistence.PrePersist;
 import org.egorr.library.models.Book;
 import org.egorr.library.models.Person;
 import org.egorr.library.repositories.BooksRepository;
@@ -70,6 +71,7 @@ public class BookService {
         book.setBookId(id);
         booksRepository.save(book);
     }
+
 
     @Transactional
     public void delete(int id) {
