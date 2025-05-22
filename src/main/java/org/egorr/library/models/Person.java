@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -44,11 +45,13 @@ public class Person {
 
     public void addBook(Book book){
         books.add(book);
+        book.setTakenAt(new Date());
         book.setOwner(this);
     }
 
     public void removeBook(Book book){
         books.remove(book);
         book.setOwner(null);
+        book.setTakenAt(null);
     }
 }

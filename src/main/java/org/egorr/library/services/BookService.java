@@ -94,9 +94,10 @@ public class BookService {
                 .orElseThrow(() -> new RuntimeException("Book not found"));
 
         int personId = book.getOwner().getId();
-        System.out.println(personId);
 
+        System.out.println(personId);
         System.out.println(TransactionSynchronizationManager.isActualTransactionActive());
+
         Person person = peopleRepository.findById(personId).orElseThrow();
         Hibernate.initialize(person.getBooks());
         person.removeBook(book);

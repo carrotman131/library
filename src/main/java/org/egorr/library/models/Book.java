@@ -40,18 +40,14 @@ public class Book {
     @Min(value = 1, message = "Year should be greater than 1")
     private int yearOfProduction;
 
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "taken_at")
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    private Date createdAt;
+    private Date takenAt;
 
     @Transient
     private boolean isExpired;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = new Date();
-    }
 
     public Book(Person owner, String name, String author, int yearOfProduction) {
         this.owner = owner;

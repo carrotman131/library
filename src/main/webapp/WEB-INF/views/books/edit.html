@@ -8,6 +8,7 @@
 <form th:method="PATCH" th:action="@{/books/{id}(id = ${book.getBookId()})}" th:object="${book}">
     <input type="hidden" name="_method" value="PATCH">
     <input type="hidden" th:field="*{bookId}">
+    <input type="hidden" th:field="*{takenAt}">
     <input th:if="${book.owner != null}" type="hidden" th:field="*{owner.id}">
 
     <label for="name">Enter the name of the book</label>
