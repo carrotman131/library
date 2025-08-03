@@ -1,10 +1,9 @@
-package org.egorr.library.controllers;
+package org.example.libraryboot.controllers;
 
 import jakarta.validation.Valid;
-import org.egorr.library.models.Book;
-import org.egorr.library.models.Person;
-import org.egorr.library.services.PeopleService;
-import org.egorr.library.util.PersonValidator;
+import org.example.libraryboot.models.*;
+import org.example.libraryboot.services.*;
+import org.example.libraryboot.util.PersonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

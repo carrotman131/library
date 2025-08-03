@@ -1,7 +1,7 @@
-package org.egorr.library.repositories;
+package org.example.libraryboot.repositories;
 
 import jakarta.validation.constraints.Pattern;
-import org.egorr.library.models.Person;
+import org.example.libraryboot.models.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

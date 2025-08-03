@@ -1,16 +1,19 @@
-package org.egorr.library.controllers;
+package org.example.libraryboot.controllers;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.egorr.library.models.Book;
-import org.egorr.library.services.BookService;
+import org.example.libraryboot.models.Book;
+import org.example.libraryboot.services.BookService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/books")
@@ -21,12 +24,33 @@ public class BookController {
         this.bookService = bookService;
     }
 
+    @GetMapping("/set-cookies")
+    @ResponseBody
+    public Cookie setCookie(HttpServletResponse session) {
+        Cookie cookie = new Cookie("id", "12345");
+        cookie.setMaxAge(60 * 60);
+        session.addCookie(cookie);
+        return cookie;
+    }
+
+    @GetMapping("/get-cookies")
+    @ResponseBody
+    public String getCookies(HttpServletRequest session){
+        Cookie[] cookies = session.getCookies();
+        StringBuilder sb = new StringBuilder();
+        for (Cookie cookie : cookies){
+            sb.append(cookie.getName()).append(cookie.getValue()).append("\n");
+        }
+        return sb.toString();
+    }
 
     @GetMapping
-    public String index(Model model, @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+    public String index(HttpSession session, Model model, @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                         @RequestParam(value = "book_per_page", required = false, defaultValue = "15") Integer bookPerPage,
                         @RequestParam(value = "sort_by_year", defaultValue = "false") boolean sortByYear) {
         List<Book> books;
+        Set<Book> obtained = (Set<Book>) session.getAttribute("viewedBooks");
+        if (obtained != null) obtained.forEach(System.out::println);
         if (page == null || bookPerPage == null || page < 0 || bookPerPage <= 0) {
             books = bookService.findAll(sortByYear);
         } else {
@@ -36,13 +60,22 @@ public class BookController {
             model.addAttribute("book_per_page", bookPerPage);
         }
 
+        model.addAttribute("viewedBooks", obtained);
         model.addAttribute("books", books);
         return "books/index";
     }
 
     @GetMapping("/{id}")
-    public String getBook(@PathVariable("id") int id, Model model) {
+    public String getBook(HttpSession session, @PathVariable("id") int id, Model model) {
         Book book = bookService.findOne(id);
+        Set<Book> obtained = (Set<Book>) session.getAttribute("viewedBooks");
+        if (obtained == null) {
+            obtained = new HashSet<>();
+        }
+
+        obtained.add(book);
+        session.setAttribute("viewedBooks", obtained);
+
         model.addAttribute("book", book);
         model.addAttribute("people", bookService.getAllPeople());
         if (book.getOwner() != null) model.addAttribute("owner", book.getOwner());

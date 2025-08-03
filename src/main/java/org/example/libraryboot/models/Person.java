@@ -1,4 +1,4 @@
-package org.egorr.library.models;
+package org.example.libraryboot.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;

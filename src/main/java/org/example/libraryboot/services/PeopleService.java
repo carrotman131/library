@@ -1,9 +1,7 @@
-package org.egorr.library.services;
+package org.example.libraryboot.services;
 
-import org.egorr.library.models.Book;
-import org.egorr.library.models.Person;
-import org.egorr.library.repositories.BooksRepository;
-import org.egorr.library.repositories.PeopleRepository;
+import org.example.libraryboot.models.*;
+import org.example.libraryboot.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

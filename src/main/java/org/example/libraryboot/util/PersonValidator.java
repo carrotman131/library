@@ -1,7 +1,7 @@
-package org.egorr.library.util;
+package org.example.libraryboot.util;
 
-import org.egorr.library.models.Person;
-import org.egorr.library.services.PeopleService;
+import org.example.libraryboot.models.Person;
+import org.example.libraryboot.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;

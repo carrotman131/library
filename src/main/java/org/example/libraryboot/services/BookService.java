@@ -1,10 +1,8 @@
-package org.egorr.library.services;
+package org.example.libraryboot.services;
 
-import jakarta.persistence.PrePersist;
-import org.egorr.library.models.Book;
-import org.egorr.library.models.Person;
-import org.egorr.library.repositories.BooksRepository;
-import org.egorr.library.repositories.PeopleRepository;
+import org.example.libraryboot.models.Book;
+import org.example.libraryboot.models.Person;
+import org.example.libraryboot.repositories.*;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

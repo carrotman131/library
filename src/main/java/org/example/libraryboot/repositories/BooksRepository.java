@@ -1,7 +1,6 @@
-package org.egorr.library.repositories;
+package org.example.libraryboot.repositories;
 
-import org.egorr.library.models.Book;
-import org.egorr.library.models.Person;
+import org.example.libraryboot.models.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

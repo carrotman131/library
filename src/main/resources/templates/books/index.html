@@ -13,12 +13,23 @@
 <hr/>
 <div th:if="${book_per_page != null && bookPage != null}">
     <span th:text="'Page ' + ${bookPage.number + 1} + ' of ' + ${bookPage.totalPages}"></span>
-    <a th:href="@{|/books?page=${bookPage.number - 1}&book_per_page=${book_per_page}|}" th:if="${!bookPage.first}">Previous Page</a>
+    <a th:href="@{|/books?page=${bookPage.number - 1}&book_per_page=${book_per_page}|}" th:if="${!bookPage.first}">Previous
+        Page</a>
     <a th:href="@{|/books?page=${bookPage.number + 1}|}" th:if="${!bookPage.last}">Next Page</a>
     <br/>
     <hr/>
 </div>
 <a href="/books/new">Add a book</a>
 <a href="/books/search">Search</a>
+<br/>
+<hr/>
+<p>Recently viewed books</p>
+<div th:if="${viewedBooks != null && !viewedBooks.isEmpty()}">
+    <div th:each="viewedBook : ${viewedBooks}">
+        <a th:href="@{books/{id}(id = ${viewedBook.getBookId()})}"
+           th:text="${viewedBook.getName()}">Book</a>
+    </div>
+</div>
+<p th:unless="${viewedBooks != null && !viewedBooks.isEmpty()}">No recent books</p>
 </body>
 </html>
